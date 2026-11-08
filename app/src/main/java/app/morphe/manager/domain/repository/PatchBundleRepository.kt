@@ -2473,6 +2473,21 @@ class PatchBundleRepository(
         }
     }
 
+    /**
+     * Imports the patch bundle shipped inside the app (any .mpp in assets) on first run
+     * and turns off every other source, so only the bundled patches are offered.
+     */
+    suspend fun ensureBundledBundle() {
+        val assetName = app.assets.list("")?.firstOrNull { it.endsWith(".mpp") } ?: return
+        var ready = awaitReady()
+        if (ready.sources.values.none { it is LocalPatchBundle }) {
+            createLocal { app.assets.open(assetName) }
+            ready = awaitReady()
+        }
+        val others = ready.sources.values.filter { it.enabled && it !is LocalPatchBundle }
+        if (others.isNotEmpty()) disable(*others.toTypedArray())
+    }
+
     internal companion object {
         const val DEFAULT_SOURCE_UID = 0
         const val LOCAL_IMPORT_STEPS = 2
