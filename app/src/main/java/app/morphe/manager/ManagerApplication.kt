@@ -186,6 +186,7 @@ class ManagerApplication : Application() {
         // start, so it happens here on a background dispatcher rather than in the Koin graph
         scope.launch(Dispatchers.Default) {
             patchBundleRepository.reload()
+            patchBundleRepository.ensureBundledBundle()
         }
 
         // Cache first for offline launches, then refresh from the network. Any matches are
