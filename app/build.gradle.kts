@@ -231,7 +231,7 @@ android {
     compileSdk = 37
 
     defaultConfig {
-        applicationId = "com.gamers.mcpatcher⁶"
+        applicationId = "com.gamers.mcpatcher"
         minSdk = 26
 
         versionName = version.toString()
